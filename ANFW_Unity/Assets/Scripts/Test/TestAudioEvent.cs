@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TestButtonEvent : MonoBehaviour
+public class TestAudioEvent : MonoBehaviour
 {
 
     [SerializeField]
