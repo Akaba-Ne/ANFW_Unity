@@ -1,14 +1,10 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
+using Const;
 
 public class AudioManager : SingletonMonoBehaviour<AudioManager>
 {
     // Volume
-    private const string BGM_VOLUME_KEY = "BGM_VOLUME_KEY";
-    private const string SE_VOLUME_KEY  = "SE_VOLUME_KEY";
     private const float BGM_VOLUME_DEFAULT = 1.0f;
     private const float SE_VOLUME_DEFAULT = 1.0f;
     // Addressables のパス
@@ -43,11 +39,11 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
                 // BGM 用
                 audioSourceArray[i].loop = true;
                 _bgmSource = audioSourceArray[i];
-                _bgmSource.volume = PlayerPrefs.GetFloat(BGM_VOLUME_KEY, BGM_VOLUME_DEFAULT);
+                _bgmSource.volume = PlayerPrefs.GetFloat(PlayerPrefsConst.BGM_VOLUME_KEY, BGM_VOLUME_DEFAULT);
             } else {
                 // SE 用
                 _seSourceList.Add(audioSourceArray[i]);
-                audioSourceArray[i].volume = PlayerPrefs.GetFloat(SE_VOLUME_KEY, SE_VOLUME_DEFAULT);
+                audioSourceArray[i].volume = PlayerPrefs.GetFloat(PlayerPrefsConst.SE_VOLUME_KEY, SE_VOLUME_DEFAULT);
             }
         }
     }
@@ -57,11 +53,11 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
         if (!_isFadeOut) return;
 
         // 徐々に音量を小さくしてフェードアウトさせる
-        float baseVol = PlayerPrefs.GetFloat(BGM_VOLUME_KEY, BGM_VOLUME_DEFAULT);
+        float baseVol = PlayerPrefs.GetFloat(PlayerPrefsConst.BGM_VOLUME_KEY, BGM_VOLUME_DEFAULT);
         _bgmSource.volume -= baseVol / _bgmFadeTime * Time.deltaTime;
         if (_bgmSource.volume <= 0) {
             _bgmSource.Stop();
-            _bgmSource.volume = PlayerPrefs.GetFloat(BGM_VOLUME_KEY, BGM_VOLUME_DEFAULT);
+            _bgmSource.volume = PlayerPrefs.GetFloat(PlayerPrefsConst.BGM_VOLUME_KEY, BGM_VOLUME_DEFAULT);
             _isFadeOut = false;
             // BGM切り替えの場合は次のBGMを流す
             if (_nextBgm != null) {
@@ -120,7 +116,7 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
     public void SetBgmVolume(float volume)
     {
         _bgmSource.volume = volume;
-        PlayerPrefs.SetFloat(BGM_VOLUME_KEY, volume);
+        PlayerPrefs.SetFloat(PlayerPrefsConst.BGM_VOLUME_KEY, volume);
     }
 
     //=================================================================================
@@ -152,6 +148,6 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager>
         foreach (AudioSource seSource in _seSourceList) {
             seSource.volume = volume;
         }
-        PlayerPrefs.SetFloat(SE_VOLUME_KEY, volume);
+        PlayerPrefs.SetFloat(PlayerPrefsConst.SE_VOLUME_KEY, volume);
     }
 }
