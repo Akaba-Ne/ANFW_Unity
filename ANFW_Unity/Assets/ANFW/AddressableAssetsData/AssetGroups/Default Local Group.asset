@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: 
+  m_GroupName: Default Local Group
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 52e5a0303660c460da27bdef133a0e7f
+  m_SerializeEntries:
+  - m_GUID: 1e0f9d28da7054ad88f07259d14c8538
+    m_Address: Sample/Character
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Master
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 28cbde116b2d646079fa9bb33ff8c4c2
+    m_Address: Audio/BGM/Test/01
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Audio
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 75f021c541617439f86623b077223c7c
+    m_Address: Prefab/Sample/Character
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d0d6092f5a9a94f41a366e528cccb6ba
+    m_Address: Audio/BGM/Test/02
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Audio
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: eac50a9160b1f4f5cabe7eaee0a972ce
+    m_Address: Audio/SE/button_1
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Audio
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 3e2505e52bb93458aa92ef6a4d720490, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: c9e7e203b4c374fa2ba96ac53981a643, type: 2}
+    - {fileID: 11400000, guid: 5346896edaf2b430da4ea36f12807a57, type: 2}
