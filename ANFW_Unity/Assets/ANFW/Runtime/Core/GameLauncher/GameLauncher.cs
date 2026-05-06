@@ -25,6 +25,8 @@ namespace ANFW
         {
             ANFWLogger.Log("GameLauncher: Initialization started");
 
+            await AddressablesLoader.InitializeAsync(ct);
+
             // 各 Manager の初期化をここに追加していく
             // await SoundManager.InitializeAsync(ct);
             // await GameSceneManager.InitializeAsync(ct);

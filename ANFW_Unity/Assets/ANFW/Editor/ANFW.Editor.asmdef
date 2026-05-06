@@ -1,12 +1,15 @@
 {
-    "name": "ANFW.Runtime",
-    "rootNamespace": "ANFW",
+    "name": "ANFW.Editor",
+    "rootNamespace": "ANFW.Editor",
     "references": [
-        "UniTask",
+        "ANFW.Runtime",
         "Unity.Addressables",
+        "Unity.Addressables.Editor",
         "Unity.ResourceManager"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
