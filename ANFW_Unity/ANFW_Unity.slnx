@@ -1,2 +1,3 @@
 ﻿<Solution>
+  <Project Path="ANFW.Runtime.csproj" />
 </Solution>
