@@ -15,8 +15,28 @@ MonoBehaviour:
   m_GroupName: AddressablesResources
   m_GUID: fa3b42b8c20af424aa67bf9703529774
   m_SerializeEntries:
+  - m_GUID: 1ab56057f939aa94787e3d4e5e0f19e5
+    m_Address: Sound/SE/test3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2fdc65718cbc4dc4e85077bd544451a3
-    m_Address: Sound/SE/button_0
+    m_Address: Sound/SE/test1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 374d1a0b30d2ceb4c8ad48cc3bef2ca9
+    m_Address: Sound/SE/test2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 81e3ccd80d1474e4d8c49fa8f13212ba
+    m_Address: Sound/SE/test4
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8eef5b073f1133e46a3452ceca10c104
+    m_Address: Sound/BGM/test
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

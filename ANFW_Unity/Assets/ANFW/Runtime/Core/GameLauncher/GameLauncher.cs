@@ -1,5 +1,6 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using ANFW.Sound;
 using UnityEngine;
 
 namespace ANFW
@@ -8,7 +9,10 @@ namespace ANFW
     {
         private static GameLauncher _instance;
 
+        [SerializeField] private int _maxSECount = 8;
+
         public static StateMachine<IState> StateMachine { get; private set; }
+        public static SoundManager SoundManager { get; private set; }
 
         private void Awake()
         {
@@ -29,11 +33,29 @@ namespace ANFW
 
             await AddressablesLoader.InitializeAsync(ct);
 
+            var soundRoot = new GameObject("Sound");
+            soundRoot.transform.SetParent(transform);
+
+            var seSources = new AudioSource[_maxSECount];
+            for (var i = 0; i < _maxSECount; i++)
+                seSources[i] = CreateAudioSource($"se_{i}", soundRoot.transform);
+
+            SoundManager = new SoundManager();
+            await SoundManager.InitializeAsync(CreateAudioSource("bgm", soundRoot.transform), seSources, ct);
+
+            StateMachine = new StateMachine<IState>();
+
             // 各 Manager の初期化をここに追加していく
-            // await SoundManager.InitializeAsync(ct);
             // await GameSceneManager.InitializeAsync(ct);
 
             ANFWLogger.Log("GameLauncher: Initialization completed");
+        }
+
+        private AudioSource CreateAudioSource(string sourceName, Transform parent = null)
+        {
+            var go = new GameObject(sourceName);
+            go.transform.SetParent(parent ?? transform);
+            return go.AddComponent<AudioSource>();
         }
     }
 }
