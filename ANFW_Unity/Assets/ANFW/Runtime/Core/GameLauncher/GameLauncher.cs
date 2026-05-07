@@ -1,5 +1,6 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using ANFW.Scene;
 using ANFW.Sound;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace ANFW
 
         public static StateMachine<IState> StateMachine { get; private set; }
         public static SoundManager SoundManager { get; private set; }
+        public static GameSceneManager GameSceneManager { get; private set; }
 
         private void Awake()
         {
@@ -45,8 +47,8 @@ namespace ANFW
 
             StateMachine = new StateMachine<IState>();
 
-            // 各 Manager の初期化をここに追加していく
-            // await GameSceneManager.InitializeAsync(ct);
+            GameSceneManager = new GameSceneManager();
+            await GameSceneManager.InitializeAsync(ct);
 
             ANFWLogger.Log("GameLauncher: Initialization completed");
         }

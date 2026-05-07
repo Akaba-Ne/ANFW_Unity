@@ -1,5 +1,6 @@
 ﻿<Solution>
   <Project Path="ANFW.Runtime.csproj" />
+  <Project Path="ANFW.Tests.Runtime.csproj" />
   <Project Path="Assembly-CSharp.csproj" />
   <Project Path="ANFW.Editor.csproj" />
 </Solution>
