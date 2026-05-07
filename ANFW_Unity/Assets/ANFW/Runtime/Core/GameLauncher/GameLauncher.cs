@@ -8,6 +8,8 @@ namespace ANFW
     {
         private static GameLauncher _instance;
 
+        public static StateMachine<IState> StateMachine { get; private set; }
+
         private void Awake()
         {
             if (_instance != null)
