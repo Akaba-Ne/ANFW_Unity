@@ -129,5 +129,21 @@ namespace ANFW.Tests
 
             Assert.IsTrue(loaded);
         });
+
+        /// <summary>
+        /// ロード完了後に IsLoading が false になること、かつ SceneLoadedEvent 受信時には false であること
+        /// </summary>
+        [UnityTest]
+        public IEnumerator LoadScene_IsLoadingFalseOnCompletion() => UniTask.ToCoroutine(async () =>
+        {
+            var isLoadingDuringEvent = true;
+            using var sub = EventBus.Subscribe<SceneLoadedEvent>(_ =>
+                isLoadingDuringEvent = _manager.IsLoading);
+
+            await _manager.LoadSceneAsync(SCENE_A, ct: _cts.Token);
+
+            Assert.IsFalse(isLoadingDuringEvent);
+            Assert.IsFalse(_manager.IsLoading);
+        });
     }
 }

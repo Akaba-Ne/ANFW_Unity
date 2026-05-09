@@ -18,6 +18,11 @@ namespace ANFW.Scene
         public string ActiveSceneName { get; private set; }
 
         /// <summary>
+        /// シーンのロード・アンロード処理が進行中かどうか
+        /// </summary>
+        public bool IsLoading { get; private set; }
+
+        /// <summary>
         /// 現在ロード中の Additive シーン名の一覧
         /// </summary>
         public IReadOnlyCollection<string> AdditiveScenes => _additiveScenes;
@@ -81,23 +86,40 @@ namespace ANFW.Scene
                 return;
             }
 
-            await SceneManager.UnloadSceneAsync(sceneName).ToUniTask(cancellationToken: ct);
-            _additiveScenes.Remove(sceneName);
+            IsLoading = true;
+            try
+            {
+                await SceneManager.UnloadSceneAsync(sceneName).ToUniTask(cancellationToken: ct);
+                _additiveScenes.Remove(sceneName);
+            }
+            finally
+            {
+                IsLoading = false;
+            }
+
             EventBus.Emit(new SceneUnloadedEvent { SceneName = sceneName });
             ANFWLogger.Log($"GameSceneManager: Unloaded '{sceneName}'");
         }
 
         private async UniTask LoadInternalAsync(string sceneName, bool additive, IProgress<float> progress, CancellationToken ct)
         {
-            var mode = additive ? LoadSceneMode.Additive : LoadSceneMode.Single;
-            await SceneManager.LoadSceneAsync(sceneName, mode).ToUniTask(progress: progress, cancellationToken: ct);
-
-            if (additive)
-                _additiveScenes.Add(sceneName);
-            else
+            IsLoading = true;
+            try
             {
-                _additiveScenes.Clear();
-                ActiveSceneName = sceneName;
+                var mode = additive ? LoadSceneMode.Additive : LoadSceneMode.Single;
+                await SceneManager.LoadSceneAsync(sceneName, mode).ToUniTask(progress: progress, cancellationToken: ct);
+
+                if (additive)
+                    _additiveScenes.Add(sceneName);
+                else
+                {
+                    _additiveScenes.Clear();
+                    ActiveSceneName = sceneName;
+                }
+            }
+            finally
+            {
+                IsLoading = false;
             }
 
             EventBus.Emit(new SceneLoadedEvent { SceneName = sceneName });
