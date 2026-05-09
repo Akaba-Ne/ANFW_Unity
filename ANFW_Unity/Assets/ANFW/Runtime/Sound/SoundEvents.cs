@@ -12,6 +12,12 @@ namespace ANFW.Sound
         public string Address;
     }
 
+    public struct PlaySEAtPositionEvent
+    {
+        public string Address;
+        public UnityEngine.Vector3 Position;
+    }
+
     public struct SetBGMVolumeEvent
     {
         public float Volume;

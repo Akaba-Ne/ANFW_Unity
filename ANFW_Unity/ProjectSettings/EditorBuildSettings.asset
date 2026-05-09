@@ -9,10 +9,10 @@ EditorBuildSettings:
     path: Assets/Scenes/Bootstrap.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
-    path: Assets/ANFW/Tests/Runtime/Scene/TestSceneA.unity
+    path: Assets/ANFW/Tests/Runtime/Scenes/TestSceneA.unity
     guid: f9e8d29619d92b7458243690010acacf
   - enabled: 1
-    path: Assets/ANFW/Tests/Runtime/Scene/TestSceneB.unity
+    path: Assets/ANFW/Tests/Runtime/Scenes/TestSceneB.unity
     guid: 34e49d20a1ac66f4796b47f4961f380a
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 9ebb5eab19bb9ed4aae588e37d7258f6, type: 2}

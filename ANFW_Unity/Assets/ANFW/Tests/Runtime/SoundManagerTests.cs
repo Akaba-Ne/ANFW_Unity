@@ -120,5 +120,57 @@ namespace ANFW.Tests
         {
             Assert.DoesNotThrow(() => _manager.StopBGM());
         }
+
+        [Test]
+        public void CreatePositionalSource_CreatesChildGameObject()
+        {
+            var parent = new GameObject("Character");
+
+            var source = _manager.CreatePositionalSource(parent.transform);
+
+            Assert.IsNotNull(source);
+            Assert.AreEqual(parent.transform, source.transform.parent);
+            Assert.AreEqual(1f, source.spatialBlend);
+
+            Object.Destroy(parent);
+        }
+
+        [Test]
+        public void CreatePositionalSource_VolumeSyncsOnMasterVolumeChange()
+        {
+            var parent = new GameObject("Character");
+            var source = _manager.CreatePositionalSource(parent.transform);
+
+            _manager.SetSEVolume(0.5f);
+            _manager.SetMasterVolume(0.8f);
+
+            Assert.AreEqual(0.5f * 0.8f, source.volume, 0.001f);
+
+            Object.Destroy(parent);
+        }
+
+        [Test]
+        public void CreatePositionalSource_VolumeSyncsOnSEVolumeChange()
+        {
+            var parent = new GameObject("Character");
+            var source = _manager.CreatePositionalSource(parent.transform);
+
+            _manager.SetMasterVolume(0.8f);
+            _manager.SetSEVolume(0.5f);
+
+            Assert.AreEqual(0.8f * 0.5f, source.volume, 0.001f);
+
+            Object.Destroy(parent);
+        }
+
+        [Test]
+        public void CreatePositionalSource_NullReferenceIsCleanedUpOnVolumeChange()
+        {
+            var parent = new GameObject("Character");
+            _manager.CreatePositionalSource(parent.transform);
+            Object.DestroyImmediate(parent);
+
+            Assert.DoesNotThrow(() => _manager.SetMasterVolume(0.5f));
+        }
     }
 }
