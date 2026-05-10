@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 using ANFW.Input;
 using ANFW.Scene;
 using ANFW.Sound;
+using ANFW.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,11 +15,13 @@ namespace ANFW
 
         [SerializeField] private int _maxSECount = 8;
         [SerializeField] private InputActionAsset _inputActionAsset;
+        [SerializeField] private Canvas _uiCanvas;
 
         public static StateMachine<IState> StateMachine { get; private set; }
         public static SoundManager SoundManager { get; private set; }
         public static GameSceneManager GameSceneManager { get; private set; }
         public static InputManager InputManager { get; private set; }
+        public static UIManager UIManager { get; private set; }
 
         private void Awake()
         {
@@ -56,6 +59,9 @@ namespace ANFW
 
             InputManager = new InputManager();
             await InputManager.InitializeAsync(_inputActionAsset, ct);
+
+            UIManager = new UIManager();
+            await UIManager.InitializeAsync(_uiCanvas != null ? _uiCanvas.transform : null, ct);
 
             ANFWLogger.Log("GameLauncher: Initialization completed");
         }
