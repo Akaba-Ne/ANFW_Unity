@@ -1,6 +1,7 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using ANFW.Input;
+using ANFW.SaveData;
 using ANFW.Scene;
 using ANFW.Sound;
 using ANFW.UI;
@@ -17,6 +18,7 @@ namespace ANFW
         [SerializeField] private InputActionAsset _inputActionAsset;
         [SerializeField] private Canvas _uiCanvas;
 
+        public static SaveDataManager SaveDataManager { get; private set; }
         public static StateMachine<IState> StateMachine { get; private set; }
         public static SoundManager SoundManager { get; private set; }
         public static GameSceneManager GameSceneManager { get; private set; }
@@ -39,6 +41,9 @@ namespace ANFW
         private async UniTask InitializeAsync(CancellationToken ct)
         {
             ANFWLogger.Log("GameLauncher: Initialization started");
+
+            SaveDataManager = new SaveDataManager();
+            await SaveDataManager.InitializeAsync(ct);
 
             await AddressablesLoader.InitializeAsync(ct);
 
