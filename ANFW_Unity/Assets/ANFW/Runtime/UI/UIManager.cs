@@ -9,7 +9,7 @@ namespace ANFW.UI
     public class UIManager
     {
         private Transform _canvasRoot;
-        private readonly Stack<(string address, GameObject instance, GameObject prefab)> _panelStack = new();
+        private readonly Stack<(string address, GameObject instance, GameObject prefab, IUIPanel panel)> _panelStack = new();
         private readonly List<IDisposable> _subscriptions = new();
         private CancellationToken _ct;
 
@@ -43,9 +43,9 @@ namespace ANFW.UI
 
             while (_panelStack.Count > 0)
             {
-                var (_, instance, prefab) = _panelStack.Pop();
-                UnityEngine.Object.Destroy(instance);
-                AddressablesLoader.Release(prefab);
+                var entry = _panelStack.Pop();
+                UnityEngine.Object.Destroy(entry.instance);
+                AddressablesLoader.Release(entry.prefab);
             }
         }
 
@@ -59,19 +59,27 @@ namespace ANFW.UI
         {
             if (_canvasRoot == null) return;
 
-            if (_panelStack.TryPeek(out var current) && current.instance.TryGetComponent<IUIPanel>(out var currentPanel))
-                await currentPanel.OnSuspendAsync(ct);
+            if (_panelStack.TryPeek(out var current) && current.panel != null)
+                await current.panel.OnSuspendAsync(ct);
 
             var prefab = await AddressablesLoader.LoadAsync<GameObject>(address, ct);
             if (prefab == null) return;
 
             var instance = UnityEngine.Object.Instantiate(prefab, _canvasRoot);
+            instance.TryGetComponent<IUIPanel>(out var panel);
 
-            if (instance.TryGetComponent<IUIPanel>(out var newPanel))
-                await newPanel.OnEnterAsync(ct);
+            try
+            {
+                if (panel != null) await panel.OnEnterAsync(ct);
+            }
+            catch
+            {
+                UnityEngine.Object.Destroy(instance);
+                AddressablesLoader.Release(prefab);
+                throw;
+            }
 
-            _panelStack.Push((address, instance, prefab));
-
+            _panelStack.Push((address, instance, prefab, panel));
             ANFWLogger.Log($"UIManager: Pushed panel '{address}' (stack depth: {_panelStack.Count})");
         }
 
@@ -84,18 +92,17 @@ namespace ANFW.UI
         {
             if (_panelStack.Count == 0) return;
 
-            var (address, instance, prefab) = _panelStack.Pop();
+            var (address, instance, prefab, panel) = _panelStack.Pop();
 
-            if (instance.TryGetComponent<IUIPanel>(out var panel))
-                await panel.OnExitAsync(ct);
+            if (panel != null) await panel.OnExitAsync(ct);
 
             UnityEngine.Object.Destroy(instance);
             AddressablesLoader.Release(prefab);
 
             ANFWLogger.Log($"UIManager: Popped panel '{address}' (stack depth: {_panelStack.Count})");
 
-            if (_panelStack.TryPeek(out var previous) && previous.instance.TryGetComponent<IUIPanel>(out var previousPanel))
-                await previousPanel.OnResumeAsync(ct);
+            if (_panelStack.TryPeek(out var previous) && previous.panel != null)
+                await previous.panel.OnResumeAsync(ct);
         }
     }
 }
